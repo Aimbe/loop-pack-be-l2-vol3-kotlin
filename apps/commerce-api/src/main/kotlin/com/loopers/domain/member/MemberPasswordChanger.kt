@@ -1,0 +1,36 @@
+package com.loopers.domain.member
+
+import com.loopers.domain.member.vo.LoginId
+import com.loopers.support.error.CoreException
+import com.loopers.support.error.ErrorType
+import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
+
+/**
+ * 회원 비밀번호 변경 담당 서비스
+ */
+@Component
+class MemberPasswordChanger(
+    private val memberRepository: MemberRepository,
+) {
+
+    /**
+     * 비밀번호를 변경합니다.
+     * @throws CoreException MEMBER_NOT_FOUND if member doesn't exist
+     * @throws CoreException AUTHENTICATION_FAILED if current password doesn't match
+     * @throws CoreException SAME_PASSWORD_NOT_ALLOWED if new password is same as current
+     * @throws CoreException PASSWORD_CONTAINS_BIRTHDATE if new password contains birthdate
+     */
+    @Transactional
+    fun changePassword(
+        loginId: LoginId,
+        currentRawPassword: String,
+        newRawPassword: String,
+    ) {
+        val member = memberRepository.findByLoginId(loginId)
+            ?: throw CoreException(ErrorType.MEMBER_NOT_FOUND)
+
+        member.changePassword(currentRawPassword, newRawPassword)
+        memberRepository.save(member)
+    }
+}
