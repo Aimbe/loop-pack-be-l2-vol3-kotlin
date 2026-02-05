@@ -2,14 +2,8 @@ package com.loopers.domain.member.vo
 
 import com.loopers.support.error.CoreException
 import com.loopers.support.error.ErrorType
-import jakarta.persistence.Column
-import jakarta.persistence.Embeddable
 
-@Embeddable
-data class Email(
-    @Column(name = "email", nullable = false)
-    val value: String,
-) {
+data class Email(val value: String) {
     init {
         if (value.isBlank() || !value.matches(PATTERN)) {
             throw CoreException(ErrorType.INVALID_EMAIL_FORMAT)

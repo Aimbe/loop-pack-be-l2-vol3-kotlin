@@ -2,16 +2,11 @@ package com.loopers.domain.member.vo
 
 import com.loopers.support.error.CoreException
 import com.loopers.support.error.ErrorType
-import jakarta.persistence.Column
-import jakarta.persistence.Embeddable
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import java.time.LocalDate
 
-@Embeddable
-data class Password private constructor(
-    @Column(name = "password", nullable = false)
-    val value: String,
-) {
+data class Password private constructor(val value: String) {
+
     fun matches(rawPassword: String): Boolean {
         return ENCODER.matches(rawPassword, value)
     }
