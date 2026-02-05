@@ -1,11 +1,7 @@
 package com.loopers.application.auth
 
-import com.loopers.domain.member.MemberModel
-import com.loopers.domain.member.vo.BirthDate
-import com.loopers.domain.member.vo.Email
-import com.loopers.domain.member.vo.LoginId
-import com.loopers.domain.member.vo.Name
 import com.loopers.domain.member.vo.Password
+import com.loopers.infrastructure.member.MemberEntity
 import com.loopers.infrastructure.member.MemberJpaRepository
 import com.loopers.support.error.CoreException
 import com.loopers.support.error.ErrorType
@@ -60,7 +56,7 @@ class AuthFacadeTest @Autowired constructor(
         @Test
         fun `중복된_로그인ID로_가입하면_예외가_발생한다`() {
             // arrange
-            createAndSaveMember(loginId = "existinguser")
+            createAndSaveMemberEntity(loginId = "existinguser")
             val command = AuthFacade.SignupCommand(
                 loginId = "existinguser",
                 rawPassword = "Password1!",
@@ -82,7 +78,7 @@ class AuthFacadeTest @Autowired constructor(
         @Test
         fun `인증_정보를_검증할_수_있다`() {
             // arrange
-            createAndSaveMember(loginId = "authuser", rawPassword = "Password1!")
+            createAndSaveMemberEntity(loginId = "authuser", rawPassword = "Password1!")
 
             // act
             val member = authFacade.authenticate(
@@ -97,7 +93,7 @@ class AuthFacadeTest @Autowired constructor(
         @Test
         fun `잘못된_비밀번호면_예외가_발생한다`() {
             // arrange
-            createAndSaveMember(loginId = "authuser2", rawPassword = "Password1!")
+            createAndSaveMemberEntity(loginId = "authuser2", rawPassword = "Password1!")
 
             // act
             val result = assertThrows<CoreException> {
@@ -112,18 +108,20 @@ class AuthFacadeTest @Autowired constructor(
         }
     }
 
-    private fun createAndSaveMember(
+    private fun createAndSaveMemberEntity(
         loginId: String = "testuser123",
         rawPassword: String = "Password1!",
+        name: String = "홍길동",
         birthDate: LocalDate = LocalDate.of(1990, 1, 15),
-    ): MemberModel {
+        email: String = "test@example.com",
+    ): MemberEntity {
         return memberJpaRepository.save(
-            MemberModel(
-                loginId = LoginId(loginId),
-                password = Password.of(rawPassword, birthDate),
-                name = Name("홍길동"),
-                birthDate = BirthDate(birthDate),
-                email = Email("test@example.com"),
+            MemberEntity(
+                loginId = loginId,
+                password = Password.of(rawPassword, birthDate).value,
+                name = name,
+                birthDate = birthDate,
+                email = email,
             ),
         )
     }
