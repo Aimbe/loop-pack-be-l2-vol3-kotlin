@@ -1,6 +1,5 @@
 package com.loopers.domain.member
 
-import com.loopers.domain.BaseEntity
 import com.loopers.domain.member.vo.BirthDate
 import com.loopers.domain.member.vo.Email
 import com.loopers.domain.member.vo.LoginId
@@ -8,35 +7,20 @@ import com.loopers.domain.member.vo.Name
 import com.loopers.domain.member.vo.Password
 import com.loopers.support.error.CoreException
 import com.loopers.support.error.ErrorType
-import jakarta.persistence.Embedded
-import jakarta.persistence.Entity
-import jakarta.persistence.Table
 
-@Entity
-@Table(name = "members")
-class MemberModel(
-    loginId: LoginId,
+/**
+ * 회원 도메인 객체 (순수 도메인, JPA 의존성 없음)
+ */
+class Member(
+    val id: Long? = null,
+    val loginId: LoginId,
     password: Password,
-    name: Name,
-    birthDate: BirthDate,
-    email: Email,
-) : BaseEntity() {
-
-    @Embedded
-    val loginId: LoginId = loginId
-
-    @Embedded
+    val name: Name,
+    val birthDate: BirthDate,
+    val email: Email,
+) {
     var password: Password = password
-        protected set
-
-    @Embedded
-    val name: Name = name
-
-    @Embedded
-    val birthDate: BirthDate = birthDate
-
-    @Embedded
-    val email: Email = email
+        private set
 
     /**
      * 비밀번호를 변경합니다.
