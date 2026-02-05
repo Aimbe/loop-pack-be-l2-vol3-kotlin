@@ -1,7 +1,8 @@
 package com.loopers.application.auth
 
-import com.loopers.domain.member.MemberModel
-import com.loopers.domain.member.MemberService
+import com.loopers.domain.member.Member
+import com.loopers.domain.member.MemberAuthenticator
+import com.loopers.domain.member.MemberRegister
 import com.loopers.domain.member.vo.BirthDate
 import com.loopers.domain.member.vo.Email
 import com.loopers.domain.member.vo.LoginId
@@ -12,7 +13,8 @@ import java.time.LocalDate
 
 @Component
 class AuthFacade(
-    private val memberService: MemberService,
+    private val memberRegister: MemberRegister,
+    private val memberAuthenticator: MemberAuthenticator,
 ) {
 
     /**
@@ -21,7 +23,7 @@ class AuthFacade(
     fun signup(command: SignupCommand): AuthInfo.SignupResult {
         val birthDate = command.birthDate
 
-        val member = memberService.register(
+        val member = memberRegister.register(
             loginId = LoginId(command.loginId),
             password = Password.of(command.rawPassword, birthDate),
             name = Name(command.name),
@@ -35,9 +37,9 @@ class AuthFacade(
     /**
      * 인증 정보를 검증합니다.
      */
-    fun authenticate(loginId: String, rawPassword: String): MemberModel {
-        return memberService.authenticate(
-            loginId = LoginId(loginId),
+    fun authenticate(loginId: String, rawPassword: String): Member {
+        return memberAuthenticator.authenticate(
+            loginId = loginId,
             rawPassword = rawPassword,
         )
     }

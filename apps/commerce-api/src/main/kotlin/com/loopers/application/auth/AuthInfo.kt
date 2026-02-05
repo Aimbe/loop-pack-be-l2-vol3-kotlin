@@ -1,6 +1,6 @@
 package com.loopers.application.auth
 
-import com.loopers.domain.member.MemberModel
+import com.loopers.domain.member.Member
 import java.time.LocalDate
 
 class AuthInfo {
@@ -13,8 +13,8 @@ class AuthInfo {
         val email: String,
     ) {
         companion object {
-            fun from(member: MemberModel) = SignupResult(
-                id = member.id,
+            fun from(member: Member) = SignupResult(
+                id = member.id ?: 0L,
                 loginId = member.loginId.value,
                 name = member.name.value,
                 birthDate = member.birthDate.value,

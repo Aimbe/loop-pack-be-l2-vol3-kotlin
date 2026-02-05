@@ -1,6 +1,6 @@
 package com.loopers.application.member
 
-import com.loopers.domain.member.MemberModel
+import com.loopers.domain.member.Member
 import java.time.LocalDate
 
 class MemberInfo {
@@ -13,7 +13,7 @@ class MemberInfo {
         val email: String,
     ) {
         companion object {
-            fun from(member: MemberModel) = MyProfile(
+            fun from(member: Member) = MyProfile(
                 loginId = member.loginId.value,
                 // 마지막 글자 마스킹
                 name = member.name.masked(),
