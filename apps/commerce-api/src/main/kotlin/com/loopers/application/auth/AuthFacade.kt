@@ -7,7 +7,6 @@ import com.loopers.domain.member.vo.BirthDate
 import com.loopers.domain.member.vo.Email
 import com.loopers.domain.member.vo.LoginId
 import com.loopers.domain.member.vo.Name
-import com.loopers.domain.member.vo.Password
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 
@@ -21,13 +20,11 @@ class AuthFacade(
      * 회원가입을 처리합니다.
      */
     fun signup(command: SignupCommand): AuthInfo.SignupResult {
-        val birthDate = command.birthDate
-
         val member = memberRegister.register(
             loginId = LoginId(command.loginId),
-            password = Password.of(command.rawPassword, birthDate),
+            rawPassword = command.rawPassword,
             name = Name(command.name),
-            birthDate = BirthDate(birthDate),
+            birthDate = BirthDate(command.birthDate),
             email = Email(command.email),
         )
 

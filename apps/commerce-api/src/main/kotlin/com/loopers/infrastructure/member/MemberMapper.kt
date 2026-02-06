@@ -24,12 +24,15 @@ class MemberMapper {
 
     fun toEntity(domain: Member): MemberEntity {
         return MemberEntity(
-            id = domain.id,
             loginId = domain.loginId.value,
             password = domain.password.value,
             name = domain.name.value,
             birthDate = domain.birthDate.value,
             email = domain.email.value,
         )
+    }
+
+    fun update(entity: MemberEntity, domain: Member) {
+        entity.changePassword(domain.password.value)
     }
 }

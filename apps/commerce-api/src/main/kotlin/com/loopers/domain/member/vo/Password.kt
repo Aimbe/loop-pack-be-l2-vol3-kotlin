@@ -6,21 +6,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class Password private constructor(val value: String) {
+data class Password private constructor(val value: String) {
 
     fun matches(rawPassword: String): Boolean {
         return ENCODER.matches(rawPassword, value)
     }
 
     override fun toString(): String = "Password(****)"
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is Password) return false
-        return value == other.value
-    }
-
-    override fun hashCode(): Int = value.hashCode()
 
     companion object {
         private val ENCODER = BCryptPasswordEncoder()

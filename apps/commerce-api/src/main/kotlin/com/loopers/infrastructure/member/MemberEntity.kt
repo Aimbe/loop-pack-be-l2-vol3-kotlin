@@ -42,6 +42,10 @@ class MemberEntity(
     @Column(name = "deleted_at")
     var deletedAt: ZonedDateTime? = null,
 ) {
+    fun changePassword(encodedPassword: String) {
+        this.password = encodedPassword
+    }
+
     @PrePersist
     fun prePersist() {
         val now = ZonedDateTime.now()

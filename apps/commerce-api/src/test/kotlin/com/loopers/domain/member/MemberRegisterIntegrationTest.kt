@@ -39,14 +39,13 @@ class MemberRegisterIntegrationTest @Autowired constructor(
             // arrange
             val loginId = LoginId("newuser123")
             val birthDate = LocalDate.of(1990, 1, 15)
-            val password = Password.of("Password1!", birthDate)
             val name = Name("홍길동")
             val email = Email("test@example.com")
 
             // act
             val member = memberRegister.register(
                 loginId = loginId,
-                password = password,
+                rawPassword = "Password1!",
                 name = name,
                 birthDate = BirthDate(birthDate),
                 email = email,
@@ -72,7 +71,7 @@ class MemberRegisterIntegrationTest @Autowired constructor(
             val result = assertThrows<CoreException> {
                 memberRegister.register(
                     loginId = loginId,
-                    password = Password.of("Password1!", birthDate),
+                    rawPassword = "Password1!",
                     name = Name("새회원"),
                     birthDate = BirthDate(birthDate),
                     email = Email("new@example.com"),

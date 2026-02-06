@@ -25,7 +25,7 @@ class MemberRegister(
     @Transactional
     fun register(
         loginId: LoginId,
-        password: Password,
+        rawPassword: String,
         name: Name,
         birthDate: BirthDate,
         email: Email,
@@ -33,6 +33,8 @@ class MemberRegister(
         if (memberRepository.existsByLoginId(loginId)) {
             throw CoreException(ErrorType.DUPLICATE_LOGIN_ID)
         }
+
+        val password = Password.of(rawPassword, birthDate.value)
 
         val member = Member(
             loginId = loginId,

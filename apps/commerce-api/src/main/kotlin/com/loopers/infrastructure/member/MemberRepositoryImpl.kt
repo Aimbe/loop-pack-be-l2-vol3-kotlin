@@ -12,15 +12,7 @@ class MemberRepositoryImpl(
 ) : MemberRepository {
 
     override fun save(member: Member): Member {
-        val entity = if (member.id != null) {
-            val existing = memberJpaRepository.findById(member.id).orElseThrow {
-                IllegalStateException("존재하지 않는 회원입니다. id=${member.id}")
-            }
-            existing.password = member.password.value
-            existing
-        } else {
-            memberMapper.toEntity(member)
-        }
+        val entity = resolveEntity(member)
         val savedEntity = memberJpaRepository.save(entity)
         return memberMapper.toDomain(savedEntity)
     }
@@ -31,5 +23,13 @@ class MemberRepositoryImpl(
 
     override fun existsByLoginId(loginId: LoginId): Boolean {
         return memberJpaRepository.existsByLoginId(loginId.value)
+    }
+
+    private fun resolveEntity(member: Member): MemberEntity {
+        if (member.id == null) return memberMapper.toEntity(member)
+
+        val entity = memberJpaRepository.getReferenceById(member.id)
+        memberMapper.update(entity, member)
+        return entity
     }
 }
