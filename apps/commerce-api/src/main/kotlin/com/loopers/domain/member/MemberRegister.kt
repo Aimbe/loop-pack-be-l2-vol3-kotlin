@@ -8,7 +8,6 @@ import com.loopers.domain.member.vo.Password
 import com.loopers.support.error.CoreException
 import com.loopers.support.error.ErrorType
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 
 /**
@@ -24,7 +23,6 @@ class MemberRegister(
      * 새 회원을 등록합니다.
      * @throws CoreException DUPLICATE_LOGIN_ID if loginId already exists
      */
-    @Transactional
     fun register(
         loginId: String,
         rawPassword: String,

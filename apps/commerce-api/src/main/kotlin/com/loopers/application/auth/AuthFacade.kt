@@ -4,6 +4,7 @@ import com.loopers.domain.member.Member
 import com.loopers.domain.member.MemberAuthenticator
 import com.loopers.domain.member.MemberRegister
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 
 @Component
@@ -15,6 +16,7 @@ class AuthFacade(
     /**
      * 회원가입을 처리합니다.
      */
+    @Transactional
     fun signup(command: SignupCommand): AuthInfo.SignupResult {
         val member = memberRegister.register(
             loginId = command.loginId,
@@ -30,6 +32,7 @@ class AuthFacade(
     /**
      * 인증 정보를 검증합니다.
      */
+    @Transactional(readOnly = true)
     fun authenticate(loginId: String, rawPassword: String): Member {
         return memberAuthenticator.authenticate(
             loginId = loginId,

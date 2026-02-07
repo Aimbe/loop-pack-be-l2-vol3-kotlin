@@ -4,7 +4,6 @@ import com.loopers.domain.member.vo.LoginId
 import com.loopers.support.error.CoreException
 import com.loopers.support.error.ErrorType
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 
 /**
  * 회원 비밀번호 변경 담당 서비스
@@ -22,7 +21,6 @@ class MemberPasswordChanger(
      * @throws CoreException SAME_PASSWORD_NOT_ALLOWED if new password is same as current
      * @throws CoreException PASSWORD_CONTAINS_BIRTHDATE if new password contains birthdate
      */
-    @Transactional
     fun changePassword(
         loginId: String,
         currentRawPassword: String,

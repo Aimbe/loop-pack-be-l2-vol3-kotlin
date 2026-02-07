@@ -4,7 +4,6 @@ import com.loopers.domain.member.vo.LoginId
 import com.loopers.support.error.CoreException
 import com.loopers.support.error.ErrorType
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 
 /**
  * 회원 인증 담당 서비스
@@ -20,7 +19,6 @@ class MemberAuthenticator(
      * @throws CoreException MEMBER_NOT_FOUND if member doesn't exist
      * @throws CoreException AUTHENTICATION_FAILED if password doesn't match
      */
-    @Transactional(readOnly = true)
     fun authenticate(loginId: String, rawPassword: String): Member {
         val member = memberRepository.findByLoginId(LoginId(loginId))
             ?: throw CoreException(ErrorType.MEMBER_NOT_FOUND)
