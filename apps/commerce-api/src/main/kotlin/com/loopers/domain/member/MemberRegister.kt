@@ -9,6 +9,7 @@ import com.loopers.support.error.CoreException
 import com.loopers.support.error.ErrorType
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 
 /**
  * 회원 등록 담당 서비스
@@ -24,24 +25,27 @@ class MemberRegister(
      */
     @Transactional
     fun register(
-        loginId: LoginId,
+        loginId: String,
         rawPassword: String,
-        name: Name,
-        birthDate: BirthDate,
-        email: Email,
+        name: String,
+        birthDate: LocalDate,
+        email: String,
     ): Member {
-        if (memberRepository.existsByLoginId(loginId)) {
+        val loginIdVo = LoginId(loginId)
+
+        if (memberRepository.existsByLoginId(loginIdVo)) {
             throw CoreException(ErrorType.DUPLICATE_LOGIN_ID)
         }
 
-        val password = Password.of(rawPassword, birthDate.value)
+        val birthDateVo = BirthDate(birthDate)
+        val password = Password.of(rawPassword, birthDateVo.value)
 
         val member = Member(
-            loginId = loginId,
+            loginId = loginIdVo,
             password = password,
-            name = name,
-            birthDate = birthDate,
-            email = email,
+            name = Name(name),
+            birthDate = birthDateVo,
+            email = Email(email),
         )
 
         return memberRepository.save(member)

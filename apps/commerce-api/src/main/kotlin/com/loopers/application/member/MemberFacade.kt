@@ -2,7 +2,6 @@ package com.loopers.application.member
 
 import com.loopers.domain.member.MemberPasswordChanger
 import com.loopers.domain.member.MemberReader
-import com.loopers.domain.member.vo.LoginId
 import org.springframework.stereotype.Component
 
 @Component
@@ -16,7 +15,7 @@ class MemberFacade(
      * 이름은 마지막 글자가 마스킹 처리됩니다.
      */
     fun getMyProfile(loginId: String): MemberInfo.MyProfile {
-        val member = memberReader.getByLoginId(LoginId(loginId))
+        val member = memberReader.getByLoginId(loginId)
         return MemberInfo.MyProfile.from(member)
     }
 
@@ -25,7 +24,7 @@ class MemberFacade(
      */
     fun changePassword(command: ChangePasswordCommand) {
         memberPasswordChanger.changePassword(
-            loginId = LoginId(command.loginId),
+            loginId = command.loginId,
             currentRawPassword = command.currentPassword,
             newRawPassword = command.newPassword,
         )

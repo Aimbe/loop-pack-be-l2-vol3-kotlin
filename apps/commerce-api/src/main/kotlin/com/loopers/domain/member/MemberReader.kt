@@ -19,8 +19,8 @@ class MemberReader(
      * @throws CoreException MEMBER_NOT_FOUND if member doesn't exist
      */
     @Transactional(readOnly = true)
-    fun getByLoginId(loginId: LoginId): Member {
-        return memberRepository.findByLoginId(loginId)
+    fun getByLoginId(loginId: String): Member {
+        return memberRepository.findByLoginId(LoginId(loginId))
             ?: throw CoreException(ErrorType.MEMBER_NOT_FOUND)
     }
 }

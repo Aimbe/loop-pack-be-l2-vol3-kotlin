@@ -3,10 +3,6 @@ package com.loopers.application.auth
 import com.loopers.domain.member.Member
 import com.loopers.domain.member.MemberAuthenticator
 import com.loopers.domain.member.MemberRegister
-import com.loopers.domain.member.vo.BirthDate
-import com.loopers.domain.member.vo.Email
-import com.loopers.domain.member.vo.LoginId
-import com.loopers.domain.member.vo.Name
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 
@@ -21,11 +17,11 @@ class AuthFacade(
      */
     fun signup(command: SignupCommand): AuthInfo.SignupResult {
         val member = memberRegister.register(
-            loginId = LoginId(command.loginId),
+            loginId = command.loginId,
             rawPassword = command.rawPassword,
-            name = Name(command.name),
-            birthDate = BirthDate(command.birthDate),
-            email = Email(command.email),
+            name = command.name,
+            birthDate = command.birthDate,
+            email = command.email,
         )
 
         return AuthInfo.SignupResult.from(member)

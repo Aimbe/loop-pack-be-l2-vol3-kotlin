@@ -23,11 +23,11 @@ class MemberPasswordChanger(
      */
     @Transactional
     fun changePassword(
-        loginId: LoginId,
+        loginId: String,
         currentRawPassword: String,
         newRawPassword: String,
     ) {
-        val member = memberRepository.findByLoginId(loginId)
+        val member = memberRepository.findByLoginId(LoginId(loginId))
             ?: throw CoreException(ErrorType.MEMBER_NOT_FOUND)
 
         member.changePassword(currentRawPassword, newRawPassword)

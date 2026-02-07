@@ -1,9 +1,5 @@
 package com.loopers.domain.member
 
-import com.loopers.domain.member.vo.BirthDate
-import com.loopers.domain.member.vo.Email
-import com.loopers.domain.member.vo.LoginId
-import com.loopers.domain.member.vo.Name
 import com.loopers.domain.member.vo.Password
 import com.loopers.infrastructure.member.MemberEntity
 import com.loopers.infrastructure.member.MemberJpaRepository
@@ -37,44 +33,40 @@ class MemberRegisterIntegrationTest @Autowired constructor(
         @Test
         fun `신규_회원을_등록할_수_있다`() {
             // arrange
-            val loginId = LoginId("newuser123")
             val birthDate = LocalDate.of(1990, 1, 15)
-            val name = Name("홍길동")
-            val email = Email("test@example.com")
 
             // act
             val member = memberRegister.register(
-                loginId = loginId,
+                loginId = "newuser123",
                 rawPassword = "Password1!",
-                name = name,
-                birthDate = BirthDate(birthDate),
-                email = email,
+                name = "홍길동",
+                birthDate = birthDate,
+                email = "test@example.com",
             )
 
             // assert
             assertAll(
                 { assertThat(member.id).isNotNull() },
                 { assertThat(member.id).isGreaterThan(0) },
-                { assertThat(member.loginId).isEqualTo(loginId) },
-                { assertThat(member.name).isEqualTo(name) },
+                { assertThat(member.loginId.value).isEqualTo("newuser123") },
+                { assertThat(member.name.value).isEqualTo("홍길동") },
             )
         }
 
         @Test
         fun `이미_존재하는_로그인ID면_예외가_발생한다`() {
             // arrange
-            val loginId = LoginId("existinguser")
             val birthDate = LocalDate.of(1990, 1, 15)
             createAndSaveMemberEntity(loginId = "existinguser")
 
             // act
             val result = assertThrows<CoreException> {
                 memberRegister.register(
-                    loginId = loginId,
+                    loginId = "existinguser",
                     rawPassword = "Password1!",
-                    name = Name("새회원"),
-                    birthDate = BirthDate(birthDate),
-                    email = Email("new@example.com"),
+                    name = "새회원",
+                    birthDate = birthDate,
+                    email = "new@example.com",
                 )
             }
 

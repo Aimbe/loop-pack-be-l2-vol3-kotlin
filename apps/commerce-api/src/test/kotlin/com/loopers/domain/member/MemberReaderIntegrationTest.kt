@@ -1,6 +1,5 @@
 package com.loopers.domain.member
 
-import com.loopers.domain.member.vo.LoginId
 import com.loopers.domain.member.vo.Password
 import com.loopers.infrastructure.member.MemberEntity
 import com.loopers.infrastructure.member.MemberJpaRepository
@@ -36,7 +35,7 @@ class MemberReaderIntegrationTest @Autowired constructor(
             val savedEntity = createAndSaveMemberEntity(loginId = "testuser123")
 
             // act
-            val member = memberReader.getByLoginId(LoginId("testuser123"))
+            val member = memberReader.getByLoginId("testuser123")
 
             // assert
             assertThat(member.id).isEqualTo(savedEntity.id)
@@ -45,11 +44,9 @@ class MemberReaderIntegrationTest @Autowired constructor(
         @Test
         fun `존재하지_않는_회원이면_예외가_발생한다`() {
             // arrange
-            val nonExistingLoginId = LoginId("nonexisting")
-
             // act
             val result = assertThrows<CoreException> {
-                memberReader.getByLoginId(nonExistingLoginId)
+                memberReader.getByLoginId("nonexisting")
             }
 
             // assert

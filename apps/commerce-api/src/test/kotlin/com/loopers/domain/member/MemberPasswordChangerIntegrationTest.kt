@@ -1,6 +1,5 @@
 package com.loopers.domain.member
 
-import com.loopers.domain.member.vo.LoginId
 import com.loopers.domain.member.vo.Password
 import com.loopers.infrastructure.member.MemberEntity
 import com.loopers.infrastructure.member.MemberJpaRepository
@@ -36,7 +35,7 @@ class MemberPasswordChangerIntegrationTest @Autowired constructor(
 
             // act
             memberPasswordChanger.changePassword(
-                loginId = LoginId("pwchangeuser"),
+                loginId = "pwchangeuser",
                 currentRawPassword = rawPassword,
                 newRawPassword = newPassword,
             )
